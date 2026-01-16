@@ -48,7 +48,13 @@ app.addPlugin = function (name, method, route, PluginClass) {
     console.log(`Plugin registrado: ${name} [${upperMethod} ${route}]`);
 };
 
-// Registrar el plugin HelloWorld
+
+// Aplicar HelloWorldBPlugin para modificar el comportamiento de HelloWorldPlugin
+const HelloWorldBPlugin = require('./plugins/HelloWorldBPlugin');
+const helloworldBPlugin = new HelloWorldBPlugin();
+helloworldBPlugin.apply();
+
+// Registrar el plugin HelloWorld (con comportamiento modificado por HelloWorldBPlugin)
 app.addPlugin('helloworld', 'GET', '/helloworld', HelloWorldPlugin);
 
 // Iniciar el servidor

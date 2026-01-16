@@ -56,9 +56,13 @@ helloworldCPlugin.apply();
 
 // IMPORTANTE: Requerir HelloWorldPlugin DESPUÉS de aplicar el Proxy
 const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
+const HelloPlugin = require('./plugins/HelloPlugin');
 
 // Registrar el plugin HelloWorld (ahora con comportamiento modificado globalmente por HelloWorldCPlugin)
 app.addPlugin('helloworld', 'GET', '/helloworld', HelloWorldPlugin);
+
+// Registrar el plugin Hello
+app.addPlugin('hello', 'GET', '/hello', HelloPlugin);
 
 // Iniciar el servidor
 app.listen(PORT, () => {

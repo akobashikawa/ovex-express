@@ -99,27 +99,50 @@ const ProxiedPlugin = plugin.apply();
 app.addPlugin('helloworld', 'GET', '/helloworld', ProxiedPlugin);
 ```
 
+
+#### 4. HelloPlugin (Parámetros)
+Plugin que demuestra el uso de parámetros de consulta (`query params`).
+
+```javascript
+class HelloPlugin {
+  handler(req, res) {
+    const name = req.query.name || 'World';
+    res.send(`Hello ${name}!`);
+  }
+}
+```
+
+**Uso:**
+```javascript
+app.addPlugin('hello', 'GET', '/hello', HelloPlugin);
+```
+
 ### Comparación de Patrones
 
-| Patrón | Ventajas | Desventajas |
-|--------|----------|-------------|
-| **Monkey Patching** | Simple, directo | Modifica globalmente el prototipo |
-| **Proxy** | No invasivo, controlado, flexible | Ligeramente más complejo |
+| Patrón | Ventajas | Desventajas | Use directo del plugin |
+|--------|----------|-------------|------------------------|
+| **Monkey Patching** | Simple, directo | Modifica globalmente el prototipo | ✅ Sí |
+| **Proxy** | No invasivo, controlado, flexible | Ligeramente más complejo | ✅ Sí |
 
 ## Endpoints
 
 - **GET** `/helloworld` - Devuelve "Hello, World" (usando HelloWorldCPlugin con Proxy)
+- **GET** `/hello` - Devuelve "Hello [nombre]!" (acepta parámetro `?name=...`)
 
 ## Ejemplo de Uso
 
+### /helloworld
 ```bash
 curl http://localhost:3000/helloworld
 ```
+Respuesta: `Hello, World`
 
-Respuesta:
+### /hello
+```bash
+curl http://localhost:3000/hello?name=John
 ```
-Hello, World
-```
+Respuesta: `Hello John!`
+
 
 ## Estructura del Proyecto
 

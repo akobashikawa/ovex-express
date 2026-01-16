@@ -54,16 +54,21 @@ const HelloWorldCPlugin = require('./plugins/HelloWorldCPlugin');
 const helloworldCPlugin = new HelloWorldCPlugin();
 helloworldCPlugin.apply();
 
-// IMPORTANTE: Requerir HelloWorldPlugin DESPUÉS de aplicar el Proxy
-const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
 
 // Aplicar HelloBPlugin para modificar globalmente el comportamiento de HelloPlugin usando Proxy
 const HelloBPlugin = require('./plugins/HelloBPlugin');
 const helloBPlugin = new HelloBPlugin();
 helloBPlugin.apply();
 
-// IMPORTANTE: Requerir HelloPlugin DESPUÉS de aplicar el Proxy
+// Aplicar HelloTimestampPlugin para agregar timestamps a ambos plugins
+// Debe aplicarse AL FINAL para envolver las modificaciones anteriores
+const HelloTimestampPlugin = require('./plugins/HelloTimestampPlugin');
+const helloTimestampPlugin = new HelloTimestampPlugin();
+helloTimestampPlugin.apply();
+
+// IMPORTANTE: Requerir HelloPlugin y HelloWorldPlugin DESPUÉS de aplicar todos los Proxies
 const HelloPlugin = require('./plugins/HelloPlugin');
+const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
 
 // Registrar el plugin HelloWorld (ahora con comportamiento modificado globalmente por HelloWorldCPlugin)
 app.addPlugin('helloworld', 'GET', '/helloworld', HelloWorldPlugin);

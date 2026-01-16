@@ -112,8 +112,23 @@ class HelloPlugin {
 }
 ```
 
+
+#### 5. HelloBPlugin (Proxy Global sobre HelloPlugin)
+Modifica `HelloPlugin` usando un Proxy Global para cambiar el formato de salida ("Hello," en vez de "Hello").
+
+```javascript
+class HelloBPlugin {
+  apply() {
+    // Intercepta handler y devuelve "Hello, [name]"
+  }
+}
+```
+
 **Uso:**
 ```javascript
+const helloBPlugin = new HelloBPlugin();
+helloBPlugin.apply(); // Debe ejecutarse ANTES de requerir HelloPlugin
+const HelloPlugin = require('./plugins/HelloPlugin');
 app.addPlugin('hello', 'GET', '/hello', HelloPlugin);
 ```
 
@@ -123,11 +138,12 @@ app.addPlugin('hello', 'GET', '/hello', HelloPlugin);
 |--------|----------|-------------|------------------------|
 | **Monkey Patching** | Simple, directo | Modifica globalmente el prototipo | ✅ Sí |
 | **Proxy** | No invasivo, controlado, flexible | Ligeramente más complejo | ✅ Sí |
+| **Proxy Global** | Uso transparente del original | Requiere orden de carga estricto | ✅ Sí |
 
 ## Endpoints
 
 - **GET** `/helloworld` - Devuelve "Hello, World" (usando HelloWorldCPlugin con Proxy)
-- **GET** `/hello` - Devuelve "Hello [nombre]!" (acepta parámetro `?name=...`)
+- **GET** `/hello` - Devuelve "Hello, [nombre]" (usando HelloBPlugin con Proxy sobre HelloPlugin)
 
 ## Ejemplo de Uso
 
@@ -141,7 +157,7 @@ Respuesta: `Hello, World`
 ```bash
 curl http://localhost:3000/hello?name=John
 ```
-Respuesta: `Hello John!`
+Respuesta: `Hello, John`
 
 
 ## Estructura del Proyecto

@@ -1,5 +1,4 @@
 const express = require('express');
-const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
 
 const app = express();
 const PORT = 3000;
@@ -49,12 +48,16 @@ app.addPlugin = function (name, method, route, PluginClass) {
 };
 
 
-// Aplicar HelloWorldBPlugin para modificar el comportamiento de HelloWorldPlugin
-const HelloWorldBPlugin = require('./plugins/HelloWorldBPlugin');
-const helloworldBPlugin = new HelloWorldBPlugin();
-helloworldBPlugin.apply();
 
-// Registrar el plugin HelloWorld (con comportamiento modificado por HelloWorldBPlugin)
+// Aplicar HelloWorldCPlugin para modificar globalmente el comportamiento de HelloWorldPlugin usando Proxy
+const HelloWorldCPlugin = require('./plugins/HelloWorldCPlugin');
+const helloworldCPlugin = new HelloWorldCPlugin();
+helloworldCPlugin.apply();
+
+// IMPORTANTE: Requerir HelloWorldPlugin DESPUÉS de aplicar el Proxy
+const HelloWorldPlugin = require('./plugins/HelloWorldPlugin');
+
+// Registrar el plugin HelloWorld (ahora con comportamiento modificado globalmente por HelloWorldCPlugin)
 app.addPlugin('helloworld', 'GET', '/helloworld', HelloWorldPlugin);
 
 // Iniciar el servidor

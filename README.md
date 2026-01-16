@@ -132,6 +132,24 @@ const HelloPlugin = require('./plugins/HelloPlugin');
 app.addPlugin('hello', 'GET', '/hello', HelloPlugin);
 ```
 
+#### 6. HelloTimestampPlugin (Proxy Global Múltiple)
+Extiende el comportamiento de múltiples plugins (`HelloWorldPlugin` y `HelloPlugin`) interceptando `res.send` para agregar un timestamp.
+
+```javascript
+class HelloTimestampPlugin {
+  apply() {
+    // Intercepta constructores y res.send
+    // Devuelve: body + " [ISO_TIMESTAMP]"
+  }
+}
+```
+
+**Uso:**
+```javascript
+const helloTimestampPlugin = new HelloTimestampPlugin();
+helloTimestampPlugin.apply(); // Aplica a todos los plugins configurados
+```
+
 ### Comparación de Patrones
 
 | Patrón | Ventajas | Desventajas | Use directo del plugin |
@@ -139,11 +157,12 @@ app.addPlugin('hello', 'GET', '/hello', HelloPlugin);
 | **Monkey Patching** | Simple, directo | Modifica globalmente el prototipo | ✅ Sí |
 | **Proxy** | No invasivo, controlado, flexible | Ligeramente más complejo | ✅ Sí |
 | **Proxy Global** | Uso transparente del original | Requiere orden de carga estricto | ✅ Sí |
+| **Proxy Interceptor** | Intercepta métodos de respuesta | Mayor complejidad | ✅ Sí |
 
 ## Endpoints
 
-- **GET** `/helloworld` - Devuelve "Hello, World" (usando HelloWorldCPlugin con Proxy)
-- **GET** `/hello` - Devuelve "Hello, [nombre]" (usando HelloBPlugin con Proxy sobre HelloPlugin)
+- **GET** `/helloworld` - Devuelve "Hello, World [TIMESTAMP]"
+- **GET** `/hello` - Devuelve "Hello, [nombre] [TIMESTAMP]"
 
 ## Ejemplo de Uso
 
@@ -151,13 +170,13 @@ app.addPlugin('hello', 'GET', '/hello', HelloPlugin);
 ```bash
 curl http://localhost:3000/helloworld
 ```
-Respuesta: `Hello, World`
+Respuesta: `Hello, World [2026-01-16T08:13:12.904Z]`
 
 ### /hello
 ```bash
 curl http://localhost:3000/hello?name=John
 ```
-Respuesta: `Hello, John`
+Respuesta: `Hello, John [2026-01-16T08:13:12.715Z]`
 
 
 ## Estructura del Proyecto

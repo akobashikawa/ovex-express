@@ -1,0 +1,16 @@
+{
+  "name": "ovex-express",
+  "version": "1.0.0",
+  "description": "Simple Express.js application with Hello World endpoint",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": ["express", "hello-world"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
